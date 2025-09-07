@@ -1,16 +1,33 @@
 import streamlit as st
 
 industries = [
-    "Technology",
-    "Healthcare",
-    "Finance",
-    "Education",
+
     "Manufacturing",
-    "Retail",
-    "Energy",
-    "Transportation",
-    "Entertainment",
-    "Agriculture",
+    "Industrial Engineering",
+    "Technology",
+    "Healthcare & Medical Services",
+    "Education & Training",
+    "Finance & Banking",
+    "Insurance",
+    "Retail & E-commerce",
+    "Hospitality & Tourism",
+    "Transportation & Logistics",
+    "Real Estate",
+    "Legal Services",
+    "Media & Entertainment",
+    "Telecommunications",
+    "Public Services & Government",
+    "Defense & Security",
+    "Professional Services",
+
+    # Quaternary Industries
+    "Research & Development",
+    "Information Services",
+    "Data Science & Analytics",
+    "Artificial Intelligence & Machine Learning",
+    "Biotechnology",
+    "Environmental Science & Sustainability",
+    "Consulting Services"
 ]
 
 # Getting Started
@@ -90,7 +107,7 @@ st.markdown(
         animation: 
             slide-in-bottom 3s 0.2s both,
             move-to-top 1s ease-out 4s forwards;
-        pointer-events: auto;
+        pointer-events: none;
         z-index: 2;
     }
     #sub-heading {
@@ -113,74 +130,87 @@ st.markdown(
       100% { opacity: 1; }
     }
 
-    /* Tiles grid */
-    #tiles {
-        position: absolute;
-        inset: 0;
-        top: 15vh;               /* leaves space for the moved header + subheading */
-        box-sizing: border-box;
-        padding: 2vh 5vw 5vh;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 14px;
-        opacity: 0;              /* hidden until click */
-        pointer-events: none;
-    }
-    /* Show tiles after click */
-    #go:checked ~ #tiles {
-        opacity: 1;
-        pointer-events: auto;
-        animation: fade-in 0.8s ease 5.4s both; /* after header moves + subheading fades */
-        z-index: 1;
-    }
-    /* Individual tile */
-    .tile {
-        display: inline-flex;
+    /* Style Streamlit-native checkboxes as tiles */
+    .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"] {
+        border: 1px solid rgba(0,0,0,0.15);
+        border-radius: 10px;
+        padding: 14px 12px;
+        background: rgba(255,255,255,0.75);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+        height: 100%;
+        display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 14px 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(0,0,0,0.15);
-        background: rgba(255,255,255,0.75);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        transform: translateY(-620px);
+    }
+    
+    .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"] label {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"]:hover {
+        transform: translateY(-620px) scale(1.03);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-color: rgba(0,0,0,0.25);
+        background: rgba(255,255,255,0.85);
         cursor: pointer;
-        user-select: none;
-        transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
     }
-    .tile:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
-
-    /* Use checkbox to track selection */
-    .tile input { display: none; }
-    .tile span { display: block; }
-    .tile input:checked + span {
-        background: rgba(76, 175, 80, 0.10);
-        border: 1px solid rgba(76, 175, 80, 0.45);
-        box-shadow: 0 0 0 2px rgba(76,175,80,0.15) inset;
+    .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"]:has(input:checked) {
+        outline: 2px solid rgba(76,175,80,0.45);
+        outline-offset: 2px;
         border-radius: 8px;
-        padding: 4px 2px;
     }
+
+    /* --- Fade-in control for native Streamlit checkboxes (tiles) --- */
+    /* Hide tiles by default */
+    [data-testid="stCheckbox"] {
+        opacity: 0;
+        pointer-events: none;
+    }
+    /* When the hidden #go checkbox is checked, fade tiles in */
+    .stApp:has(#go:checked) [data-testid="stCheckbox"] {
+        animation: fade-in 0.8s cubic-bezier(0.390, 0.575, 0.565, 1.000) 5.4s both;
+        pointer-events: auto;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Build tiles HTML
-tiles_html = "\n".join([
-    f'<label class="tile"><input type="checkbox" name="industry" value="{name}"><span>{name}</span></label>'
-    for name in industries
-])
-
-# Show animated text
 st.markdown(
-    f'''
+    '''
     <div id="anim-root">
       <input type="checkbox" id="go" class="screen-toggle">
       <label for="go" class="click-overlay" aria-label="Click to continue"></label>
       <div id="anim-container" class="centered-text">Let\'s get started</div>
       <div id="next-text">What are you into?</div>
       <div id="sub-heading">Choose an area of interest to begin</div>
-      <div id="tiles">{tiles_html}</div>
+      <div id="tiles-start"></div>
+    ''',
+    unsafe_allow_html=True
+)
+
+# Initialize selection state
+if 'industries_selected' not in st.session_state:
+    st.session_state['industries_selected'] = []
+
+# Render tiles as native checkboxes in a grid
+NUM_COLS = 4
+cols = st.columns(NUM_COLS)
+for i, name in enumerate(industries):
+    with cols[i % NUM_COLS]:
+        checked = st.checkbox(name, key=f"industry_{i}")
+
+# Collect selections into session state
+selected = [name for i, name in enumerate(industries) if st.session_state.get(f"industry_{i}")]
+st.session_state['industries_selected'] = selected
+
+st.markdown(
+    '''
     </div>
     ''',
     unsafe_allow_html=True
