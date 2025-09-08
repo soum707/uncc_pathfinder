@@ -5,28 +5,26 @@ industries = [
     "Manufacturing",
     "Industrial Engineering",
     "Technology",
-    "Healthcare & Medical Services",
+    "Healthcare ",
     "Education & Training",
     "Finance & Banking",
     "Insurance",
-    "Retail & E-commerce",
-    "Hospitality & Tourism",
-    "Transportation & Logistics",
+    "E-commerce",
+    "Hospitality",
+    "Logistics",
     "Real Estate",
     "Legal Services",
     "Media & Entertainment",
     "Telecommunications",
-    "Public Services & Government",
-    "Defense & Security",
     "Professional Services",
 
     # Quaternary Industries
     "Research & Development",
     "Information Services",
-    "Data Science & Analytics",
-    "Artificial Intelligence & Machine Learning",
+    "Data Science",
+    "Artificial Intelligence",
     "Biotechnology",
-    "Environmental Science & Sustainability",
+    "Environmental Science",
     "Consulting Services"
 ]
 
@@ -143,13 +141,20 @@ st.markdown(
         align-items: center;
         justify-content: center;
         text-align: center;
-        transform: translateY(-400px);
+        transform: translateY(-460px);
     }
     
     .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"] label {
         width: 100%;
         display: flex;
         justify-content: center;
+    }
+    .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"]:hover {
+        border-color: rgba(0,0,0,0.25);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.9);
+        transform: translateY(-465px) scale(1.03);
+        cursor: pointer;
     }
     .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"]:has(input:checked) {
         outline: 2px solid rgba(76,175,80,0.45);
