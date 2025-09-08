@@ -73,7 +73,7 @@ st.markdown(
     }
     @keyframes move-to-top {
         0%   { transform: translateY(0); }
-        100% { transform: translateY(-35vh); }
+        100% { transform: translateY(-30vh); }
     }
     .screen-toggle { display: none; }
     .click-overlay {
@@ -112,7 +112,7 @@ st.markdown(
     }
     #sub-heading {
         position: absolute;
-        top: 8vh;
+        top: 12vh;
         width: 100%;
         text-align: center;
         font-size: 1.2em;
@@ -143,20 +143,13 @@ st.markdown(
         align-items: center;
         justify-content: center;
         text-align: center;
-        transform: translateY(-620px);
+        transform: translateY(-400px);
     }
     
     .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"] label {
         width: 100%;
         display: flex;
         justify-content: center;
-    }
-    .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"]:hover {
-        transform: translateY(-620px) scale(1.03);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        border-color: rgba(0,0,0,0.25);
-        background: rgba(255,255,255,0.85);
-        cursor: pointer;
     }
     .stApp [data-testid="stVerticalBlock"]:has(#tiles-start) [data-testid="stCheckbox"]:has(input:checked) {
         outline: 2px solid rgba(76,175,80,0.45);
