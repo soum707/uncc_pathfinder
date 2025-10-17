@@ -1,0 +1,65 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+# Setup Chrome
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(options=chrome_options)
+
+main_url = "https://catalog.charlotte.edu/preview_course_nopop.php?catoid=40&coid=141180"
+driver.get(main_url)
+
+# Wait for JS to load
+time.sleep(3)
+
+# Collect all course links containing ITSC or ITCS
+links_elements = driver.find_elements(By.TAG_NAME, "a")
+course_links = [el.get_attribute("href") for el in links_elements if "ITSC" in el.text or "ITCS" in el.text]
+
+output_file = "courses_clean.txt"
+
+with open(output_file, "w", encoding="utf-8") as f:
+    for idx, link in enumerate(course_links, start=1):
+        driver.get(link)
+        time.sleep(2)
+
+        try:
+            # Title (usually h1 or h2)
+            title_el = driver.find_element(By.TAG_NAME, "h1")
+            title = title_el.text.strip() if title_el else "No Title"
+
+            # Get all text paragraphs
+            paragraphs = driver.find_elements(By.TAG_NAME, "p")
+            description = ""
+            credit_hours = ""
+            gen_ed = ""
+
+            for p in paragraphs:
+                text = p.text.strip()
+                if text.startswith("Credit Hours:"):
+                    credit_hours = text
+                elif text.startswith("General Education Requirement"):
+                    gen_ed = text
+                else:
+                    # Append normal description
+                    description += text + "\n"
+
+            # Write organized content
+            f.write(f"\n\n--- Course {idx}: {title} ---\n\n")
+            f.write(description.strip() + "\n")
+            if credit_hours:
+                f.write(credit_hours + "\n")
+            if gen_ed:
+                f.write(gen_ed + "\n")
+
+            print(f"Processed {idx}/{len(course_links)}: {title}")
+
+        except Exception as e:
+            print(f"Failed to process {link}: {e}")
+
+driver.quit()
