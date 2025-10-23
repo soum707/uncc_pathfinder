@@ -14,6 +14,9 @@ RAG_LLM_MODEL = "deepseek-r1-distill-llama-70b"
 # Groq API key
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
+# OpenAI API key
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
 # Number of FAISS results to retrieve
 TOP_K = 3
 

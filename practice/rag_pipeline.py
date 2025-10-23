@@ -1,6 +1,7 @@
-from config import DB_FAISS_PATH, RAG_LLM_MODEL, GROQ_API_KEY, TOP_K
+from config import DB_FAISS_PATH, RAG_LLM_MODEL, GROQ_API_KEY, TOP_K, OPENAI_API_KEY
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
 from langchain_community.vectorstores import FAISS
 from langchain.prompts import ChatPromptTemplate
 from survey import summarize_responses, ask_survey
@@ -78,7 +79,8 @@ def run_rag(summary):
 
     # 3. Initialize LLM
 
-    llm = ChatGroq(model=RAG_LLM_MODEL, temperature=0.4, api_key=GROQ_API_KEY)
+    # llm = ChatGroq(model=RAG_LLM_MODEL, temperature=0.4, api_key=GROQ_API_KEY)
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2, api_key=OPENAI_API_KEY)
 
     # 4. Wrap messages
     messages = [
