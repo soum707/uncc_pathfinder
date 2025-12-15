@@ -13,7 +13,7 @@ def load_pdfs(data_path="data/"):
     documents = loader.load()
     return documents
 
-def create_chunks(documents, chunk_size=500, chunk_overlap=50):
+def create_chunks(documents, chunk_size=3000, chunk_overlap=300):
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap

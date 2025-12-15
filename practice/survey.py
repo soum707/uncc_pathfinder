@@ -1,8 +1,8 @@
 from config import SURVEY_LLM_MODEL, GROQ_API_KEY, OPENAI_API_KEY
 from langchain_groq import ChatGroq
-from langchain_openai import ChatOpenAI
-from langchain.schema import HumanMessage
-from langchain import hub
+from langchain_core.messages import HumanMessage
+# from langchainhub import LangChainHub
+# from langchain.chat_models import ChatOpenAI
 
 SURVEY = [
     {
@@ -143,11 +143,11 @@ def ask_survey():
 
 
 def summarize_responses(answers):
-    llm = ChatOpenAI(
-        model="gpt-4o-mini",
+    llm = ChatGroq(
+        model=SURVEY_LLM_MODEL,
         temperature=0.3,
         max_tokens=512,
-        api_key=OPENAI_API_KEY,
+        api_key=GROQ_API_KEY,
     )
 
     profile_text = "\n".join([

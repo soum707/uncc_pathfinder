@@ -6,10 +6,10 @@ load_dotenv()
 DB_FAISS_PATH = "vectorstore/db_faiss"
 
 # Survey summarization model (short text)
-SURVEY_LLM_MODEL = "meta-llama/llama-4-maverick-17b-128e-instruct"
+SURVEY_LLM_MODEL = "llama-3.1-8b-instant"
 
 # RAG generation model (longer reasoning)
-RAG_LLM_MODEL = "deepseek-r1-distill-llama-70b"
+RAG_LLM_MODEL = "llama-3.3-70b-versatile"
 
 # Groq API key
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -18,5 +18,5 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Number of FAISS results to retrieve
-TOP_K = 3
+TOP_K = 5
 
