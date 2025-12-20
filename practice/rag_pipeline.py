@@ -52,9 +52,21 @@ def run_rag(summary):
     db = FAISS.load_local(DB_FAISS_PATH, embedding_model, allow_dangerous_deserialization=True)
 
     # 2. Retrieve relevant documents
+    # Determine the major from the summary
+    if "Data Science" in summary:
+        major = "Data Science"
+    elif "Sports Analytics" in summary:
+        major = "Sports Analytics"
+    else:
+        major = "Data Science"  # default fallback
+    
+    query = f"{major} major core courses, electives, minors, double majors, and career paths: {summary}"
     retriever = db.as_retriever(search_kwargs={"k": TOP_K})
-    docs = retriever.invoke(summary)
+    docs = retriever.invoke(query)
     catalog_text = "\n".join([d.page_content for d in docs])
+    print("Retrieved catalog text:")
+    print(catalog_text[:2000])  # Print first 2000 chars to see
+    print("---")
     #docs = retriever.get_relevant_documents(summary)
 
     # 3. Initialize LLM
