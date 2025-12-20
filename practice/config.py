@@ -18,5 +18,5 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Number of FAISS results to retrieve
-TOP_K = 5
+TOP_K = 10
 
